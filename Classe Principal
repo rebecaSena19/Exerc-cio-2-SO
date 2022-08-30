@@ -1,0 +1,70 @@
+//com apoio
+
+package view;
+
+import java.util.Scanner;
+
+import controller.KillController;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		KillController kCont = new KillController();
+
+		int opcao = -1;
+		Boolean isNumero = false;
+		Scanner sc = new Scanner(System.in);
+		String entrada = null;
+
+		do {
+
+			System.out.println(
+					"\nDigite uma das opcoes:\n" + "1 - Listar processos do SO\n" + "2 - Encerrar um processo por PID\n"
+							+ "3 - Encerrar um processo por NOME\n" + "9 - Fechar programa \n");
+
+			entrada = sc.nextLine();
+
+			try {
+				opcao = Integer.parseInt(entrada);
+				isNumero = true;
+			}
+
+			catch (NumberFormatException e) {
+				isNumero = false;
+				System.err.println("\nINVALIDO. Por favor, digite um NUMERO");
+				continue;
+			}
+			switch (opcao) {
+			case 1:
+				kCont.listaProcessos();
+				break;
+			case 2:
+				int pid = 0;
+				System.out.println("\nInsira o PID do processo a ser finalizado\n");
+				entrada = sc.nextLine();
+				try {
+					pid = Integer.parseInt(entrada);
+					kCont.mataPid(pid);
+				} catch (NumberFormatException e) {
+					System.err.println("\nVoce digitou um NOME, talvez de erro rsrs\n");
+					kCont.mataNome(entrada);
+				}
+				break;
+			case 3:
+				System.out.println("\nInsira o NOME do processo a ser finalizado\n");
+				entrada = sc.nextLine();
+				kCont.mataNome(entrada);
+			case 9:
+				break;
+			default:
+				System.err.println("\nOPCAO INVALIDA. Tente novamente\n");
+				break;
+			}
+		} while (isNumero == false || opcao != 9);
+
+		sc.close();
+
+	}
+
+}
